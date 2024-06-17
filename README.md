@@ -1,9 +1,9 @@
 # Ninmu-api
 The backend REST API for Ninmu, serves the web and mobile clients
 
-
 # Infrastructure:
-### Describe your process for branching and merging in your team’s repository (e.g. GitHub flow, Picking the right branch-merge strategy):
+
+![0nTY2nx3ulEfi5JuT](https://github.com/zeusmadeit/Ninmu-api/assets/58306978/69ad31eb-402f-4af5-8e67-99aa02689498)
 
 ## Branching:
 ### Main Branch: The main branch always contains production-ready code.
