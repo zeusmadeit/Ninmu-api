@@ -24,12 +24,12 @@ services:
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
-      - .:/app/server
-      - /app/server/static
+      - ./backend:/app/server
+      - ./static:/app/server/static
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - ./ninmu-api/.env
     depends_on:
       db:
         condition: service_healthy
@@ -53,9 +53,9 @@ services:
       #if you’re using Windows, you may need to uncomment the next line - Sol from @Kobe E
       #- WATCHPACK_POLLING=true
     volumes:
-      - .:/app/client
-      - /app/client/node_modules
-      - /app/client/.next
+      - ./client:/app/client
+      - node_modules:/app/client/node_modules
+      - .next:/app/client/.next
     ports:
       - 3000:3000
     env_file:

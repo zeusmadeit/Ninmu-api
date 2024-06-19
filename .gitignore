@@ -6,6 +6,16 @@ __pycache__/
 # Venv
 venv/
 
+# Environments
+# .env
+.venv
+venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # C extensions
 *.so
 
@@ -123,15 +133,6 @@ celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
 
 # Spyder project settings
 .spyderproject

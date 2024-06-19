@@ -122,7 +122,7 @@ DATABASES = {
         'USER': os.getenv("POSTGRES_USER"),
         'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
         "ATOMIC_MUTATIONS": True,
-        'HOST': 'db',
+        'HOST': os.getenv("DATABASE_HOST"),
         'PORT': 5432,
     }
 }
