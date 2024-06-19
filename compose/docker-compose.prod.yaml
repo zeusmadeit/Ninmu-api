@@ -18,7 +18,7 @@ services:
 
   server:
     build: 
-      context: ./Ninmu-api
+      context: ./ninmu-api
       dockerfile: Dockerfile
     container_name: server
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
