@@ -32,6 +32,14 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'client']
+CORS_ALLOWED_ORIGINS = [
+    # "https://example.com",
+    # "https://sub.example.com",
+    "0.0.0.0",
+    "client",
+    "http://localhost",
+    "http://127.0.0.1",
+]
 
 
 # Application definition
@@ -47,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "rest_framework_simplejwt.token_blacklist",
+    "corsheaders",
 ]
 
 # put on your settings.py file below INSTALLED_APPS
@@ -71,6 +80,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

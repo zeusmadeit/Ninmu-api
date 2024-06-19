@@ -7,7 +7,7 @@ services:
     volumes:
       - data:/var/lib/postgresql/data/
     env_file:
-      - ./Ninmu-api/.env
+      - ./ninmu-api/.env
     ports:
       - "5432:5432"
     healthcheck:
@@ -25,6 +25,7 @@ services:
     restart: always
     volumes:
       - .:/app/server
+      - /app/server/static
     ports:
       - "8000:8000"
     env_file:
