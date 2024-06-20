@@ -55,11 +55,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    # User defined
+    'users.apps.AccountsConfig',
 ]
 
 # put in your settings.py file below INSTALLED_APPS to make 
 # all your routes require authentication by default
-
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': (
 #         'rest_framework.permissions.IsAuthenticated',
@@ -92,7 +93,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'NinmuApi.urls'
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 TEMPLATES = [
     {
@@ -126,7 +127,7 @@ DATABASES = {
         'HOST': os.getenv("DATABASE_HOST"),
         'PORT': 5432,
     },
-    # 'test': {
+    # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': 'testdb',
     # }
@@ -184,9 +185,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ########################
 JAZZMIN_SETTINGS: Dict[str, Any] = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Library Admin",
+    "site_title": "Ninmu Admin",
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Library",
+    "site_header": "Ninmu",
     # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "books/img/logo.png",
     # Relative path to logo for your site, used for login logo (must be present in static files. Defaults to site_logo)
@@ -198,9 +199,9 @@ JAZZMIN_SETTINGS: Dict[str, Any] = {
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": "books/img/icon.png",
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "Welcome to ninmu admin",
     # Copyright on the footer
-    "copyright": "Acme Library Ltd",
+    "copyright": "ninmu",
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
     "search_model": ["auth.User", "auth.Group"],

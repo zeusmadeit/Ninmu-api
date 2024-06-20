@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from NinmuApi import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.send_test_data, name='home'), # Link the view to a URL
+    path('api/v1/', include('users.urls', namespace="users")),
 ]
 
