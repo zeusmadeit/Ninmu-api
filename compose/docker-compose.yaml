@@ -45,7 +45,6 @@ services:
     build:
       context: ./ninmu-frontend #if your Dockerfile is not at the same level change the path here (./frontend)
       dockerfile: Dockerfile
-      target: dev
     restart: always
     command: npm run dev
     environment:

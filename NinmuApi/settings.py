@@ -40,7 +40,6 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # Application definition
-
 INSTALLED_APPS = [
     # Keep this above 'django.contrib.admin'
     "jazzmin",
@@ -58,15 +57,17 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
-# put on your settings.py file below INSTALLED_APPS
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
+# put in your settings.py file below INSTALLED_APPS to make 
+# all your routes require authentication by default
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
@@ -124,7 +125,11 @@ DATABASES = {
         "ATOMIC_MUTATIONS": True,
         'HOST': os.getenv("DATABASE_HOST"),
         'PORT': 5432,
-    }
+    },
+    # 'test': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'testdb',
+    # }
 }
 
 # Password validation
