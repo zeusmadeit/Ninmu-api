@@ -19,6 +19,6 @@ from NinmuApi import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', views.send_test_data, name='home'), # Link the view to a URL
+    path('', views.send_test_data, name='home'), # Link the view to a URL
 ]
 
