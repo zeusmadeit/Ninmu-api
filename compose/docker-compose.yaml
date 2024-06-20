@@ -16,6 +16,21 @@ services:
       timeout: 3s
       retries: 3
 
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ninmu
+      MINIO_ROOT_PASSWORD: ninmukey
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+    command: server /data --console-address ":9001"
+
   server:
     build: 
       context: ./ninmu-api
@@ -24,8 +39,7 @@ services:
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
-      - ./backend:/app/server
-      - ./static:/app/server/static
+      - ./ninmu-api:/app/server
     ports:
       - "8000:8000"
     env_file:
@@ -64,4 +78,6 @@ services:
         condition: service_healthy
 
 volumes:
+  minio_data:
+  minio_config:
   data:
