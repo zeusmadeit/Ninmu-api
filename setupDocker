@@ -5,11 +5,11 @@
 if [ "$#" -lt 1 ];
 then
 	yes | cp -vf ./compose/docker-compose.yaml ../ && yes | cp -vuf .env ../
-	docker compose up
+#	docker compose up
 elif [[ $1 == "build" ]];
 then
 	yes | cp -vf ./compose/docker-compose.yaml ../ && yes | cp -vuf .env ../
-	docker compose up --build
+#	docker compose up --build
 else
 	echo "Incorect argument"
 	echo "try: ./setupDocker build"
