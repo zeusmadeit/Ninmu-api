@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     # User defined
-    'users.apps.AccountsConfig',
+    'users.apps.UsersConfig',
 ]
 
 
@@ -122,6 +122,14 @@ DATABASES = {
     #     'NAME': 'testdb',
     # }
 }
+
+# S3 / minio configuration
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "minio-access-key")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "minio-secret-key")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "ninmu-bucket")
+AWS_S3_ENDPOINT_URL = "http://minio:9000"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

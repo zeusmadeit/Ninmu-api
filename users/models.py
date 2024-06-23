@@ -8,21 +8,22 @@ from django.core.mail import send_mail
 from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
-    username = models.CharField(_("username"), unique=True, null=False, blank=False)
+    username = models.CharField(_("username"), max_length=150, unique=True, null=False, blank=False)
     email = models.EmailField(_("email address"), unique=True, null=False, blank=False)
+    picture = models.ImageField()
     first_name = models.CharField(_("first name"), max_length=250)
     last_name = models.CharField(_("last name"), max_length=250)
     phone_number = models.CharField(_("phone number"), max_length=15, unique=True)
     address = models.TextField(_("address"),)
     is_online = models.BooleanField(_("online"), default=False)
-    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    date_joined = models.DateTimeField(_("date joined"), auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(_("updated at"), auto_now_add=True)
 
-    EMAIL_FIELD = "email"
-    USERNAME_FIELD = "username"
+    # EMAIL_FIELD = "email"
+    # USERNAME_FIELD = "username"
     objects = CustomUserManager()
 
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'phone_number']
+    REQUIRED_FIELDS = ['email', 'first_name', 'phone_number']
 
     # Methods
     def get_absolute_url(self):
