@@ -16,7 +16,6 @@ services:
       timeout: 3s
       retries: 3
 
-
   minio:
     image: minio/minio:latest
     container_name: minio
@@ -66,9 +65,9 @@ services:
       #if you’re using Windows, you may need to uncomment the next line - Sol from @Kobe E
       #- WATCHPACK_POLLING=true
     volumes:
-      - ./client:/app/client
-      - ./node_modules:/app/client/node_modules
-      - ./.next:/app/client/.next
+      - ./ninmu-frontend:/app/client
+      - ./ninmu-frontend/node_modules:/app/client/node_modules
+      - ./ninmu-frontend/.next:/app/client/.next
     ports:
       - 3000:3000
     env_file:

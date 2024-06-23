@@ -59,16 +59,6 @@ INSTALLED_APPS = [
     'users.apps.AccountsConfig',
 ]
 
-# put in your settings.py file below INSTALLED_APPS to make 
-# all your routes require authentication by default
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
