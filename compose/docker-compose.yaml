@@ -80,19 +80,19 @@ services:
       server:
         condition: service_healthy
 
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      apt-get install -y nc &&
-      while ! nc -z minio 9000; do echo 'Wait minio to startup...' && sleep 0.1; done; sleep 5 &&
-      /usr/bin/mc config host add myminio http://minio:9000 access-key secret-key;
-      /usr/bin/mc mb myminio/ninmu-bucket;
-      /usr/bin/mc policy download myminio/ninmu-bucket;
-      exit 0;
-      " 
+  # createbuckets:
+  #   image: minio/mc
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     apt-get install -y nc &&
+  #     while ! nc -z minio 9000; do echo 'Wait minio to startup...' && sleep 0.1; done; sleep 5 &&
+  #     /usr/bin/mc config host add myminio http://minio:9000 access-key secret-key;
+  #     /usr/bin/mc mb myminio/ninmu-bucket;
+  #     /usr/bin/mc policy download myminio/ninmu-bucket;
+  #     exit 0;
+  #     " 
 
 volumes:
   minio_data:
