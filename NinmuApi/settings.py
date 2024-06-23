@@ -42,7 +42,7 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 INSTALLED_APPS = [
     # Keep this above 'django.contrib.admin'
-    "jazzmin",
+    'jazzmin',
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,12 +53,14 @@ INSTALLED_APPS = [
     # All default apps end here
     'rest_framework',
     'rest_framework_simplejwt',
-    "rest_framework_simplejwt.token_blacklist",
-    "corsheaders",
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'minio_storage',
+    'drf_yasg',  # For API documentation
     # User defined
     'users.apps.UsersConfig',
 ]
-
+# 'django_elasticsearch_dsl',  # For Elasticsearch
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
@@ -117,19 +119,8 @@ DATABASES = {
         'HOST': os.getenv("DATABASE_HOST"),
         'PORT': 5432,
     },
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'testdb',
-    # }
 }
 
-# S3 / minio configuration
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "minio-access-key")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "minio-secret-key")
-AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "ninmu-bucket")
-AWS_S3_ENDPOINT_URL = "http://minio:9000"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -164,11 +155,31 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# S3 / Minio Storage Configuration
+DEFAULT_FILE_STORAGE = 'minio_storage.storage.MinioMediaStorage'
+STATICFILES_STORAGE = 'minio_storage.storage.MinioStaticStorage'
+MINIO_STORAGE_ENDPOINT = 'http://localhost:9000'
+MINIO_STORAGE_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY_ID", "minio-access-key")
+MINIO_STORAGE_SECRET_KEY = os.environ.get("MINIO_SECRET_ACCESS_KEY", "minio-secret-key")
+MINIO_STORAGE_USE_HTTPS = False
+MINIO_STORAGE_MEDIA_BUCKET_NAME = os.environ.get("MINIO_STORAGE_BUCKET_NAME", "media")
+MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+MINIO_STORAGE_STATIC_BUCKET_NAME = os.environ.get("MINIO_STORAGE_BUCKET_NAME", "static")
+MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
 
-STATIC_URL = "static/"
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "public"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Elasticsearch Configuration
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'localhost:9200'
+#     },
+# }
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -200,6 +211,8 @@ JAZZMIN_SETTINGS: Dict[str, Any] = {
     "welcome_sign": "Welcome to ninmu admin",
     # Copyright on the footer
     "copyright": "ninmu",
+    # language chooser
+    "language_chooser": True,
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
     "search_model": ["auth.User", "auth.Group"],

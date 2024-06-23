@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from . import serializers
+from .models import Follower
 
 
 User = get_user_model()
@@ -70,4 +71,8 @@ class UserAPIView(RetrieveUpdateAPIView):
         return self.request.user
 
 
+class FollowerViewSet(viewsets.ModelViewSet):
+    queryset = Follower.objects.all()
+    serializer_class = serializers.FollowerSerializer
+    permission_classes = [IsAuthenticated]
 
