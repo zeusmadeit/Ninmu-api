@@ -42,7 +42,7 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 INSTALLED_APPS = [
     # Keep this above 'django.contrib.admin'
-    "jazzmin",
+    'jazzmin',
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,21 +53,14 @@ INSTALLED_APPS = [
     # All default apps end here
     'rest_framework',
     'rest_framework_simplejwt',
-    "rest_framework_simplejwt.token_blacklist",
-    "corsheaders",
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'minio_storage',
+    'drf_yasg',  # For API documentation
+    # User defined
+    'users.apps.UsersConfig',
 ]
-
-# put in your settings.py file below INSTALLED_APPS to make 
-# all your routes require authentication by default
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-# }
+# 'django_elasticsearch_dsl',  # For Elasticsearch
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
@@ -92,7 +85,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'NinmuApi.urls'
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 TEMPLATES = [
     {
@@ -126,11 +119,8 @@ DATABASES = {
         'HOST': os.getenv("DATABASE_HOST"),
         'PORT': 5432,
     },
-    # 'test': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'testdb',
-    # }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -165,11 +155,31 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# S3 / Minio Storage Configuration
+DEFAULT_FILE_STORAGE = 'minio_storage.storage.MinioMediaStorage'
+STATICFILES_STORAGE = 'minio_storage.storage.MinioStaticStorage'
+MINIO_STORAGE_ENDPOINT = 'http://localhost:9000'
+MINIO_STORAGE_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY_ID", "minio-access-key")
+MINIO_STORAGE_SECRET_KEY = os.environ.get("MINIO_SECRET_ACCESS_KEY", "minio-secret-key")
+MINIO_STORAGE_USE_HTTPS = False
+MINIO_STORAGE_MEDIA_BUCKET_NAME = os.environ.get("MINIO_STORAGE_BUCKET_NAME", "media")
+MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+MINIO_STORAGE_STATIC_BUCKET_NAME = os.environ.get("MINIO_STORAGE_BUCKET_NAME", "static")
+MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
 
-STATIC_URL = "static/"
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "public"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Elasticsearch Configuration
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'localhost:9200'
+#     },
+# }
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -184,9 +194,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ########################
 JAZZMIN_SETTINGS: Dict[str, Any] = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Library Admin",
+    "site_title": "Ninmu Admin",
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Library",
+    "site_header": "Ninmu",
     # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "books/img/logo.png",
     # Relative path to logo for your site, used for login logo (must be present in static files. Defaults to site_logo)
@@ -198,9 +208,11 @@ JAZZMIN_SETTINGS: Dict[str, Any] = {
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": "books/img/icon.png",
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "Welcome to ninmu admin",
     # Copyright on the footer
-    "copyright": "Acme Library Ltd",
+    "copyright": "ninmu",
+    # language chooser
+    "language_chooser": True,
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
     "search_model": ["auth.User", "auth.Group"],

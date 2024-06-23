@@ -16,6 +16,22 @@ services:
       timeout: 3s
       retries: 3
 
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    # environment:
+    #   MINIO_ROOT_USER: ninmu
+    #   MINIO_ROOT_PASSWORD: ninmukey
+    env_file:
+      - ./ninmu-api/.env
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+    command: server /data --console-address ":9001"
+
   server:
     build: 
       context: ./ninmu-api
@@ -24,8 +40,7 @@ services:
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
-      - ./backend:/app/server
-      - ./static:/app/server/static
+      - ./ninmu-api:/app/server
     ports:
       - "8000:8000"
     env_file:
@@ -33,6 +48,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      minio:
+        condition: service_started
     healthcheck:
       test: curl --fail http://localhost:8000/ || exit 1
       interval: 40s
@@ -52,9 +69,9 @@ services:
       #if you’re using Windows, you may need to uncomment the next line - Sol from @Kobe E
       #- WATCHPACK_POLLING=true
     volumes:
-      - ./client:/app/client
-      - ./node_modules:/app/client/node_modules
-      - ./.next:/app/client/.next
+      - ./ninmu-frontend:/app/client
+      - ./ninmu-frontend/node_modules:/app/client/node_modules
+      - ./ninmu-frontend/.next:/app/client/.next
     ports:
       - 3000:3000
     env_file:
@@ -63,5 +80,21 @@ services:
       server:
         condition: service_healthy
 
+  # createbuckets:
+  #   image: minio/mc
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     apt-get install -y nc &&
+  #     while ! nc -z minio 9000; do echo 'Wait minio to startup...' && sleep 0.1; done; sleep 5 &&
+  #     /usr/bin/mc config host add myminio http://minio:9000 access-key secret-key;
+  #     /usr/bin/mc mb myminio/ninmu-bucket;
+  #     /usr/bin/mc policy download myminio/ninmu-bucket;
+  #     exit 0;
+  #     " 
+
 volumes:
+  minio_data:
+  minio_config:
   data:
