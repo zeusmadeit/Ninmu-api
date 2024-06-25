@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Goals
+from .models import Goal
 from .serializers import GoalSerializer
 from rest_framework.permissions import IsAuthenticated
 
